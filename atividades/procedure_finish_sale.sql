@@ -9,6 +9,7 @@ CREATE TABLE shopping_cart (
         REFERENCES products (id)
 );
 
+
 DELIMITER $
 
 CREATE PROCEDURE finish_sale(
@@ -30,10 +31,11 @@ BEGIN
         
         SET v_order_id = LAST_INSERT_ID();
 
-        INSERT INTO order_items(order_id, product_id, product_name, quantity)
+        INSERT INTO order_items(order_id, product_id, product_name, product_price, quantity)
             SELECT 	v_order_id,
                     shopping_cart.product_id,
-                    products.product_name,
+                    products.name,
+                    products.price,
                     shopping_cart.quantity
             FROM shopping_cart
             INNER JOIN products
